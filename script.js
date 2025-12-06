@@ -10,12 +10,16 @@ const leftTotalEl = document.getElementById('totalLeftWeight');
 const rightTotalEl = document.getElementById('totalRightWeight');
 
 function init() {
+    loadData();
+
     if (nextWeight === 0) {
         nextWeight = getRandomWeight();
     }
     
+    updateScreen();
     plankElement.addEventListener('click', handlePlankClick);
 }
+
 
 function handlePlankClick(event) {
 
@@ -46,8 +50,11 @@ function handlePlankClick(event) {
     console.log(nextWeight, sideName, absDistance);
 
     nextWeight = getRandomWeight();
+
+    saveData();
     updateScreen();
 }
+
 
 function updateScreen() {
 
@@ -60,7 +67,6 @@ function updateScreen() {
     }
 
     calculatePhysics()
-
     nextWeightEl.innerText = nextWeight + ' kg';
 }
 
@@ -112,9 +118,34 @@ function getRandomWeight() {
     return Math.floor(Math.random() * 10) + 1;
 }
 
+
 function getRandomColor() {
     const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'];
     return colors[Math.floor(Math.random() * colors.length)];
+}
+
+
+function saveData() {
+    const data = {
+        left: leftWeights,
+        right: rightWeights,
+        next: nextWeight
+    };
+    localStorage.setItem('simple_seesaw_data', JSON.stringify(data));
+}
+
+
+function loadData() {
+    const saved = localStorage.getItem('simple_seesaw_data');
+    if (saved) {
+        const data = JSON.parse(saved);
+        leftWeights = data.left;
+        rightWeights = data.right;
+        nextWeight = data.next;
+
+        for(let i=0; i<leftWeights.length; i++) leftWeights[i].isNew = false; /*animasyon tekrarlamasın diye */
+        for(let i=0; i<rightWeights.length; i++) rightWeights[i].isNew = false;
+    }
 }
 
 
