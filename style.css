@@ -3,6 +3,7 @@
     --bg-color: #f4f7f6;
     --plank-color: #8d6e63;
     --pivot-color: #34495e;
+    --accent-color: #3498db;
 }
 
 body {
@@ -87,6 +88,7 @@ body {
     position: relative;
     border-radius: 5px;
     cursor: pointer;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* burası çubuk animasyonu için */
     transform-origin: center center;
     z-index: 2;
 }
@@ -105,7 +107,7 @@ body {
 }
 
  /* buton ve geçmiş */
- 
+
 .controls {
     text-align: center;
 }
@@ -138,3 +140,5 @@ body {
     padding: 5px 0;
     border-bottom: 1px solid #eee;
 }
+
+
