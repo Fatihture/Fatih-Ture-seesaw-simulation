@@ -1,6 +1,8 @@
 :root {
     --primary-color: #2c3e50;
     --bg-color: #f4f7f6;
+    --plank-color: #8d6e63;
+    --pivot-color: #34495e;
 }
 
 body {
@@ -52,4 +54,52 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--primary-color);
+}
+
+
+/* simülasyon kısmı */
+
+.simulation-area {
+    background: white;
+    height: 400px; 
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.seesaw-container {
+    position: relative;
+    width: 500px; 
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; 
+}
+
+.seesaw-plank {
+    width: 500px; 
+    height: 10px;
+    background-color: var(--plank-color);
+    position: relative;
+    border-radius: 5px;
+    cursor: pointer;
+    transform-origin: center center;
+    z-index: 2;
+}
+
+.seesaw-pivot {
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 40px solid var(--pivot-color);
+    position: absolute;
+    bottom: -40px; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
 }
