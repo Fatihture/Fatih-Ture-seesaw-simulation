@@ -4,6 +4,10 @@ let leftWeights = [];
 let rightWeights = [];
 
 const plankElement = document.getElementById('plank');
+const nextWeightEl = document.getElementById('nextWeightDisplay');
+
+const leftTotalEl = document.getElementById('totalLeftWeight');
+const rightTotalEl = document.getElementById('totalRightWeight');
 
 function init() {
     if (nextWeight === 0) {
@@ -27,23 +31,79 @@ function handlePlankClick(event) {
         weight: nextWeight,
         distance: absDistance,
         color: getRandomColor(),
+        isNew: true
     };
 
     let sideName = "";
     if (distance < 0) {
         leftWeights.push(newBall);
         sideName = "Left";
-        console.log(distance);
     } else {
         rightWeights.push(newBall);
         sideName = "Right";
-        console.log(distance);
     }
 
-    nextWeight = getRandomWeight();
+    console.log(nextWeight, sideName, absDistance);
 
+    nextWeight = getRandomWeight();
+    updateScreen();
 }
 
+function updateScreen() {
+
+    for (let i = 0; i < leftWeights.length; i++) {
+        drawBall(leftWeights[i], 'left');
+    }
+
+    for (let i = 0; i < rightWeights.length; i++) {
+        drawBall(rightWeights[i], 'right');
+    }
+
+    calculatePhysics()
+
+    nextWeightEl.innerText = nextWeight + ' kg';
+}
+
+
+function drawBall(ball, side) {
+    const div = document.createElement('div');
+
+    div.className = 'weight-object';
+
+    div.innerText = ball.weight;
+    div.style.backgroundColor = ball.color;
+
+    const size = 30 + (ball.weight * 2);
+    div.style.width = size + 'px';
+    div.style.height = size + 'px';
+
+    const center = PLANK_LENGTH / 2;
+    if (side === 'left') {
+        div.style.left = (center - ball.distance) + 'px';
+    } else {
+        div.style.left = (center + ball.distance) + 'px';
+    }
+
+    plankElement.appendChild(div);
+}
+
+
+function calculatePhysics() {
+
+    let leftTotal = 0;
+    let rightTotal = 0;
+
+    for (let i = 0; i < leftWeights.length; i++) {
+        leftTotal += leftWeights[i].weight;
+    }
+
+    for (let i = 0; i < rightWeights.length; i++) {
+        rightTotal += rightWeights[i].weight;
+    }
+    
+    leftTotalEl.innerText = leftTotal + ' kg';
+    rightTotalEl.innerText = rightTotal + ' kg';
+}
 
 
 /*kullanacağım diğer fonksiyonlar */
@@ -58,3 +118,4 @@ function getRandomColor() {
 }
 
 
+init();
