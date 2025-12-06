@@ -5,10 +5,9 @@ let rightWeights = [];
 
 const plankElement = document.getElementById('plank');
 const nextWeightEl = document.getElementById('nextWeightDisplay');
-
 const leftTotalEl = document.getElementById('totalLeftWeight');
 const rightTotalEl = document.getElementById('totalRightWeight');
-
+const angleEl = document.getElementById('tiltAngle');
 const logListEl = document.getElementById('logList');
 const resetBtn = document.getElementById('resetBtn');
 
@@ -104,19 +103,31 @@ function drawBall(ball, side) {
 
 function calculatePhysics() {
 
+    let leftTorque = 0;
+    let rightTorque = 0;
     let leftTotal = 0;
     let rightTotal = 0;
 
     for (let i = 0; i < leftWeights.length; i++) {
+        leftTorque += leftWeights[i].weight * leftWeights[i].distance;
         leftTotal += leftWeights[i].weight;
     }
 
     for (let i = 0; i < rightWeights.length; i++) {
+        rightTorque += rightWeights[i].weight * rightWeights[i].distance;
         rightTotal += rightWeights[i].weight;
     }
+
+    let angle = (rightTorque - leftTorque) / 10;
+
+    if (angle > 30) angle = 30;
+    if (angle < -30) angle = -30;
+
+    plankElement.style.transform = 'rotate(' + angle + 'deg)';
     
     leftTotalEl.innerText = leftTotal + ' kg';
     rightTotalEl.innerText = rightTotal + ' kg';
+    angleEl.innerText = angle.toFixed(1) + '°';
 }
 
 
