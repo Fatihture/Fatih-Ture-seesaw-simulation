@@ -9,6 +9,9 @@ const nextWeightEl = document.getElementById('nextWeightDisplay');
 const leftTotalEl = document.getElementById('totalLeftWeight');
 const rightTotalEl = document.getElementById('totalRightWeight');
 
+const logListEl = document.getElementById('logList');
+const resetBtn = document.getElementById('resetBtn');
+
 function init() {
     loadData();
 
@@ -17,7 +20,9 @@ function init() {
     }
     
     updateScreen();
+
     plankElement.addEventListener('click', handlePlankClick);
+    resetBtn.addEventListener('click', resetSimulation);
 }
 
 
@@ -47,7 +52,7 @@ function handlePlankClick(event) {
         sideName = "Right";
     }
 
-    console.log(nextWeight, sideName, absDistance);
+    addLog(nextWeight, sideName, absDistance);
 
     nextWeight = getRandomWeight();
 
@@ -57,6 +62,8 @@ function handlePlankClick(event) {
 
 
 function updateScreen() {
+    
+    plankElement.innerHTML = '';
 
     for (let i = 0; i < leftWeights.length; i++) {
         drawBall(leftWeights[i], 'left');
@@ -67,6 +74,7 @@ function updateScreen() {
     }
 
     calculatePhysics()
+
     nextWeightEl.innerText = nextWeight + ' kg';
 }
 
@@ -122,6 +130,22 @@ function getRandomWeight() {
 function getRandomColor() {
     const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'];
     return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function addLog(weight, side, distance) {
+    const p = document.createElement('div');
+    p.className = 'log-item';
+    p.innerText = weight + 'kg dropped on ' + side + ' at ' + Math.round(distance) + 'px';
+    logListEl.prepend(p);
+}
+
+function resetSimulation() {
+    leftWeights = [];
+    rightWeights = [];
+    nextWeight = getRandomWeight();
+    logListEl.innerHTML = '';
+    saveData();
+    updateScreen();
 }
 
 
