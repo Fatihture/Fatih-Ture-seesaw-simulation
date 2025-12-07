@@ -17,6 +17,8 @@ function init() {
     if (nextWeight === 0) {
         nextWeight = getRandomWeight();
     }
+
+
     
     updateScreen();
 
@@ -41,6 +43,8 @@ function handlePlankClick(event) {
         color: getRandomColor(),
         isNew: true
     };
+
+    playDropSound();
 
     let sideName = "";
     if (distance < 0) {
@@ -75,6 +79,8 @@ function updateScreen() {
     calculatePhysics()
 
     nextWeightEl.innerText = nextWeight + ' kg';
+
+    
 }
 
 
@@ -186,6 +192,42 @@ function loadData() {
         for(let i=0; i<leftWeights.length; i++) leftWeights[i].isNew = false; /*animasyon tekrarlamasın diye */
         for(let i=0; i<rightWeights.length; i++) rightWeights[i].isNew = false;
     }
+}
+
+/* ses */
+
+function playDropSound() {
+    
+
+    const audioCtx = new AudioContext();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    // Sesin tonu
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+    if (nextWeight < 4) {
+        oscillator.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.1);
+    }
+
+    else if (nextWeight < 7) {
+        oscillator.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.1);
+    }
+
+    else {
+        oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
+    }
+
+    // Sesin seviyesi
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.1);
 }
 
 
