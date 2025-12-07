@@ -91,6 +91,7 @@ body {
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* burası çubuk animasyonu için */
     transform-origin: center center;
     z-index: 2;
+    margin-bottom: 60px;
 }
 
 .seesaw-pivot {
@@ -104,6 +105,8 @@ body {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
+        margin-bottom: 60px;
+
 }
 
  /* buton ve geçmiş */
@@ -128,7 +131,7 @@ body {
 
 .log-area {
     background: #fff;
-    padding: 15px;
+    padding: 50px;
     border-radius: 8px;
     max-height: 150px;
     overflow-y: auto;
@@ -155,4 +158,26 @@ body {
     transform: translateX(-50%);  /* tıklanan yerin sağında değil de ortasında oluşmasını sağlıyor */
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     pointer-events: none; /*zaten eklenmiş bir topun üstüne tıklayınca offset konumu toptan başlatmasın diye*/
+}
+
+@keyframes dropIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-300px) scale(1.1);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(0.9);
+    }
+    80% {
+        /* Sekme */
+        transform: translateX(-50%) translateY(-20px) scale(1.05);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+
+.weight-object.falling {
+    animation: dropIn 0.6s ease-out forwards;
 }

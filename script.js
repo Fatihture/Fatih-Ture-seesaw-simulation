@@ -81,9 +81,14 @@ function updateScreen() {
 function drawBall(ball, side) {
     const div = document.createElement('div');
 
-    div.className = 'weight-object';
+    if (ball.isNew) {
+        div.className = 'weight-object falling'; // animasyonu tetikler
+        ball.isNew = false; // sonraki çizimde tekrar düşmesin diye 
+    } else {
+        div.className = 'weight-object';
+    }
 
-    div.innerText = ball.weight;
+    div.innerText = ball.weight + 'kg' ;
     div.style.backgroundColor = ball.color;
 
     const size = 30 + (ball.weight * 2);
@@ -146,7 +151,7 @@ function getRandomColor() {
 function addLog(weight, side, distance) {
     const p = document.createElement('div');
     p.className = 'log-item';
-    p.innerText = weight + 'kg dropped on ' + side + ' at ' + Math.round(distance) + 'px';
+    p.innerText = "📦" + " " + weight + 'kg dropped on ' + side + ' at ' + Math.round(distance) + 'px';
     logListEl.prepend(p);
 }
 
