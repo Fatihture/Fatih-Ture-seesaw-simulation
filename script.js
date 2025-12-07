@@ -2,6 +2,7 @@ const PLANK_LENGTH = 500;
 let nextWeight = 0;
 let leftWeights = []; 
 let rightWeights = [];
+let ghostBall;
 
 const plankElement = document.getElementById('plank');
 const nextWeightEl = document.getElementById('nextWeightDisplay');
@@ -17,10 +18,31 @@ function init() {
     if (nextWeight === 0) {
         nextWeight = getRandomWeight();
     }
-
-
     
     updateScreen();
+
+    ghostBall = document.createElement('div');
+    ghostBall.className = 'ghost-ball';
+    plankElement.appendChild(ghostBall);
+
+    plankElement.addEventListener('mousemove', (e) => {
+        const x = e.offsetX;
+        
+        ghostBall.style.left = x + 'px';
+        ghostBall.style.display = 'flex';
+
+        const size = 30 + (nextWeight * 2);
+        ghostBall.style.width = size + 'px';
+        ghostBall.style.height = size + 'px';
+        
+        ghostBall.innerText = nextWeight + 'kg';
+    });
+
+    plankElement.addEventListener('mouseleave', () => {
+        ghostBall.style.display = 'none';
+    });
+
+
 
     plankElement.addEventListener('click', handlePlankClick);
     resetBtn.addEventListener('click', resetSimulation);
@@ -77,8 +99,11 @@ function updateScreen() {
     }
 
     calculatePhysics()
-
     nextWeightEl.innerText = nextWeight + ' kg';
+
+    if(ghostBall) {
+        plankElement.appendChild(ghostBall);
+    }
 
     
 }
@@ -88,7 +113,7 @@ function drawBall(ball, side) {
     const div = document.createElement('div');
 
     if (ball.isNew) {
-        div.className = 'weight-object falling'; // animasyonu tetikler
+        div.className = 'weight-object falling';
         ball.isNew = false; // sonraki çizimde tekrar düşmesin diye 
     } else {
         div.className = 'weight-object';
@@ -229,6 +254,5 @@ function playDropSound() {
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + 0.1);
 }
-
 
 init();
